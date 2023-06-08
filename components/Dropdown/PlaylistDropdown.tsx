@@ -22,8 +22,8 @@ const PlaylistDropdown: FC<PlaylistDropdownProps> = ({ playlistOwner }) => {
   const isPublic = searchParams.get("public") || false;
 
   const url = !isPublic
-    ? `https://spotify-clone-ebon-theta.vercel.app${path}?name=${playlistName}`
-    : `https://spotify-clone-ebon-theta.vercel.app${path}?name=${playlistName}&public=${isPublic}`;
+    ? `https://spotify-clone-sukrittt.vercel.app${path}?name=${playlistName}`
+    : `https://spotify-clone-sukrittt.vercel.app${path}?name=${playlistName}&public=${isPublic}`;
 
   const handleShareUrl = () => {
     navigator.clipboard
