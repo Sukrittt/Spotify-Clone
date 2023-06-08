@@ -3,16 +3,21 @@ import { cookies } from "next/headers";
 
 import { Song } from "@/types";
 
-const getSongs = async (): Promise<Song[]> => {
+const getSongs = async (limit?: number): Promise<Song[]> => {
   const supabase = createServerComponentClient({
     cookies: cookies,
   });
 
-  const { data, error } = await supabase
+  let query = supabase
     .from("songs")
     .select("*")
-    .order("created_at", { ascending: false })
-    .limit(10);
+    .order("created_at", { ascending: false });
+
+  if (limit) {
+    query = query.limit(limit);
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     console.log(error);

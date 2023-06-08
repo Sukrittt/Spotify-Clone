@@ -12,7 +12,7 @@ import getTopLikes from "@/actions/getTopLikes";
 export const revalidate = 0;
 
 export default async function Home() {
-  const songs = await getSongs();
+  const songs = await getSongs(16);
 
   const playlists = await getUserPlaylists();
   const publicPlaylists = await getPublicPlaylists();

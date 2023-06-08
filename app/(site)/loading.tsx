@@ -43,7 +43,7 @@ const loading = () => {
           <Skeleton className="h-6 w-[160px] bg-gray-600"></Skeleton>
         </div>
         <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8">
-          {Array.from({ length: 10 }, (_, index) => index + 1).map((id) => (
+          {Array.from({ length: 16 }, (_, index) => index + 1).map((id) => (
             <div
               key={id}
               className="group relative flex cursor-pointer flex-col items-center justify-center gap-x-4 overflow-hidden rounded-md bg-neutral-400/5 p-3 transition hover:bg-neutral-400/10"
