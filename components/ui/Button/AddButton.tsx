@@ -1,6 +1,6 @@
 "use client";
 import { FC, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSessionContext } from "@supabase/auth-helpers-react";
 import { toast } from "react-hot-toast";
 import { twMerge } from "tailwind-merge";
@@ -18,6 +18,9 @@ interface AddButtonProps {
 const AddButton: FC<AddButtonProps> = ({ playlist, songId }) => {
   const router = useRouter();
   const { supabaseClient } = useSessionContext();
+  const searchParams = useSearchParams();
+
+  const isPublic = searchParams.get("public") || false;
 
   const { user } = useUser();
   const authModal = useAuthModal();
@@ -72,6 +75,7 @@ const AddButton: FC<AddButtonProps> = ({ playlist, songId }) => {
       song_id: songId,
       name: playlist.name,
       image_path: playlist.image_path,
+      public: isPublic,
     });
 
     if (error) {
@@ -92,7 +96,8 @@ const AddButton: FC<AddButtonProps> = ({ playlist, songId }) => {
       .delete()
       .eq("user_id", user.id)
       .eq("song_id", songId)
-      .eq("name", playlist.name);
+      .eq("name", playlist.name)
+      .eq("public", isPublic);
 
     if (error) {
       toast.error(error.message);

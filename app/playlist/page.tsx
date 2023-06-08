@@ -13,6 +13,7 @@ interface PlaylistProps {
   searchParams: {
     name: string;
     title: string;
+    public?: boolean;
   };
 }
 
@@ -20,7 +21,11 @@ export const revalidate = 0;
 
 const Playlist = async ({ searchParams }: PlaylistProps) => {
   const songs = await getSongsByTitle(searchParams.title);
-  const playlist = await getPlaylistByName(searchParams.name);
+  const playlist = await getPlaylistByName(
+    searchParams.name,
+    searchParams?.public
+  );
+
   const userPlaylists = await getUserPlaylists();
 
   const countNumberOfSongs = (): number => {
@@ -32,7 +37,10 @@ const Playlist = async ({ searchParams }: PlaylistProps) => {
 
   const noOfSongs = countNumberOfSongs();
 
-  let playlistSongs = await getPlaylistSongs(searchParams.name);
+  let playlistSongs = await getPlaylistSongs(
+    searchParams.name,
+    searchParams?.public
+  );
   playlistSongs = playlistSongs.filter((song) => song.id !== undefined);
 
   return (
@@ -69,7 +77,7 @@ const Playlist = async ({ searchParams }: PlaylistProps) => {
               )}
             </div>
           </div>
-          <PlaylistDropdown />
+          <PlaylistDropdown playlistOwner={playlist[0].user_id}/>
         </div>
       </Header>
       <PlaylistContent

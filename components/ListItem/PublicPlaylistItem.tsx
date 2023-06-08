@@ -1,5 +1,6 @@
 "use client";
 import { FC } from "react";
+import qs from "query-string";
 import Image from "next/image";
 
 import { Playlist } from "@/types";
@@ -24,7 +25,17 @@ const PublicPlaylistItem: FC<PublicPlaylistItemProps> = ({ data }) => {
       return onOpen();
     }
 
-    return router.push(`/playlist?name=${data.name}`);
+    const query = {
+      name: data.name,
+      public: true,
+    };
+
+    const url = qs.stringifyUrl({
+      url: "/playlist",
+      query,
+    });
+
+    return router.push(url);
   };
 
   return (

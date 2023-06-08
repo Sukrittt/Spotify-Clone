@@ -5,7 +5,7 @@ import { Playlist } from "@/types";
 const useLoadImage = (playlist: Playlist) => {
   const supabaseClient = useSupabaseClient();
 
-  if (!playlist.image_path || !playlist) {
+  if (!playlist || !playlist.image_path) {
     return null;
   }
 

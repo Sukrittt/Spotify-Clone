@@ -17,6 +17,8 @@ export interface Playlist {
   song_id?: number;
   image_path?: string;
   songs: Song;
+  public: boolean;
+  created_at: string;
 }
 
 export interface Song {

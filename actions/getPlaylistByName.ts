@@ -3,7 +3,10 @@ import { cookies } from "next/headers";
 
 import { Playlist } from "@/types";
 
-const getPlaylistByName = async (name: string): Promise<Playlist[]> => {
+const getPlaylistByName = async (
+  name: string,
+  isPublic?: boolean
+): Promise<Playlist[]> => {
   const supabase = createServerComponentClient({
     cookies: cookies,
   });
@@ -16,14 +19,33 @@ const getPlaylistByName = async (name: string): Promise<Playlist[]> => {
     return [];
   }
 
-  const { data, error } = await supabase
-    .from("playlists")
-    .select("*, songs(*)")
-    .eq("user_id", sessionData.session?.user.id)
-    .ilike("name", `%${name}%`);
+  let data;
 
-  if (error) {
-    console.log(error.message);
+  if (isPublic) {
+    const { data: publicData, error } = await supabase
+      .from("playlists")
+      .select("*, songs(*)")
+      .is("public", true)
+      .ilike("name", `%${name}%`);
+
+    data = publicData;
+
+    if (error) {
+      console.log(error.message);
+    }
+  } else {
+    const { data: privateData, error } = await supabase
+      .from("playlists")
+      .select("*, songs(*)")
+      .eq("user_id", sessionData.session?.user.id)
+      .is("public", false)
+      .ilike("name", `%${name}%`);
+
+    data = privateData;
+
+    if (error) {
+      console.log(error.message);
+    }
   }
 
   return (data as any) || [];

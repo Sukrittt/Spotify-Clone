@@ -8,14 +8,6 @@ const getPublicPlaylists = async (): Promise<Playlist[]> => {
     cookies: cookies,
   });
 
-  const { data: sessionData, error: sessionError } =
-    await supabase.auth.getSession();
-
-  if (sessionError) {
-    console.log(sessionError.message);
-    return [];
-  }
-
   const { data: playlistData, error } = await supabase
     .from("playlists")
     .select("*")

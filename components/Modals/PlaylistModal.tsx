@@ -32,13 +32,14 @@ const PlaylistModal = () => {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
+    console.log("clicked");
+
     try {
       setIsLoading(true);
       const imageFile = values.image?.[0];
 
       if (!values.name || !user) {
-        toast.error("Missing Fields");
-        return;
+        return toast.error("Missing Fields");
       }
 
       const uniqueId = uniqid();
@@ -81,7 +82,7 @@ const PlaylistModal = () => {
           user_id: user.id,
           image_path: imageContent && imageContent.path,
           song_id: songId,
-          name: values.name,
+          name: values.name || null,
           user_name: values.username,
           public: isPublic,
         });
@@ -118,15 +119,28 @@ const PlaylistModal = () => {
       return;
     }
 
-    const { data, error } = await supabaseClient
-      .from("playlists")
-      .select("*")
-      .eq("user_id", user.id)
-      .eq("name", name);
+    if (isPublic) {
+      const { data, error } = await supabaseClient
+        .from("playlists")
+        .select("*")
+        .is("public", true)
+        .ilike("name", name);
 
-    if (!error && data.length > 0) {
-      return true;
+      if (!error && data.length > 0) {
+        return true;
+      }
+    } else {
+      const { data, error } = await supabaseClient
+        .from("playlists")
+        .select("*")
+        .eq("user_id", user.id)
+        .ilike("name", name);
+
+      if (!error && data.length > 0) {
+        return true;
+      }
     }
+
     return false;
   };
 
@@ -168,7 +182,7 @@ const PlaylistModal = () => {
             <Input
               id="username"
               disabled={isLoading}
-              {...register("username", { required: true })}
+              {...register("username")}
               placeholder="Your name"
             />
           </div>

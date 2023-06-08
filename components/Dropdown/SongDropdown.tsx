@@ -16,11 +16,13 @@ import usePlaylistModal from "@/hooks/Modals/usePlaylistModal";
 interface SongDropdownProps {
   songId: string;
   userPlaylists: Playlist[];
+  playlistOwner: string;
 }
 
 const SongDropdown: FC<SongDropdownProps> = ({
   songId,
   userPlaylists: playlists,
+  playlistOwner,
 }) => {
   const router = useRouter();
   const { supabaseClient } = useSessionContext();
@@ -148,6 +150,7 @@ const SongDropdown: FC<SongDropdownProps> = ({
       song_id: songId,
       name: playlist.name,
       image_path: playlist.image_path,
+      public: playlist.public || false,
     });
 
     if (error) {
@@ -199,12 +202,14 @@ const SongDropdown: FC<SongDropdownProps> = ({
             className="relative left-8 min-w-[180px] rounded-md bg-neutral-800 shadow-lg shadow-neutral-900 md:left-24"
             sideOffset={5}
           >
-            <DropdownMenu.Item
-              onClick={removeSongFromPlaylist}
-              className="cursor-pointer rounded-md p-3 transition hover:bg-neutral-600 hover:outline-none"
-            >
-              <p className="truncate text-sm">Remove from this playlist</p>
-            </DropdownMenu.Item>
+            {playlistOwner === user?.id && (
+              <DropdownMenu.Item
+                onClick={removeSongFromPlaylist}
+                className="cursor-pointer rounded-md p-3 transition hover:bg-neutral-600 hover:outline-none"
+              >
+                <p className="truncate text-sm">Remove from this playlist</p>
+              </DropdownMenu.Item>
+            )}
             <DropdownMenu.Item
               onClick={handleLike}
               className="cursor-pointer rounded-md p-3 transition hover:bg-neutral-600 hover:outline-none"
@@ -237,11 +242,18 @@ const SongDropdown: FC<SongDropdownProps> = ({
                   <DropdownMenu.Separator className="h-[0.5px] bg-neutral-700" />
                   {userPlaylists.map((playlist) => (
                     <DropdownMenu.Item
-                      key={playlist.image_path}
+                      key={playlist.created_at}
                       onClick={() => addSongToPlaylist(playlist)}
                       className="cursor-pointer rounded-md p-3 transition hover:bg-neutral-600 hover:outline-none"
                     >
-                      <p className="truncate text-sm">{playlist.name}</p>
+                      <div className="flex items-center gap-x-1">
+                        <p className="truncate text-sm">{playlist.name}</p>
+                        {playlist.public && (
+                          <p className="truncate text-sm text-neutral-400">
+                            - Public
+                          </p>
+                        )}
+                      </div>
                     </DropdownMenu.Item>
                   ))}
                 </DropdownMenu.SubContent>

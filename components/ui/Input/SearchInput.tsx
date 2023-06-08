@@ -23,7 +23,7 @@ const SearchInput: FC<SearchInputProps> = ({ href }) => {
 
     const url = qs.stringifyUrl({
       url: href || "/search",
-      query: query,
+      query,
     });
 
     router.push(url);

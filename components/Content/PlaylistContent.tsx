@@ -1,6 +1,6 @@
 "use client";
 import { FC, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FaPlay } from "react-icons/fa";
 import { BsShuffle } from "react-icons/bs";
 import { twMerge } from "tailwind-merge";
@@ -28,13 +28,22 @@ const PlaylistContent: FC<PlaylistContentProps> = ({
   playlist,
   songsByTitle,
   playlistSongs,
-  userPlaylists
+  userPlaylists,
 }) => {
   const router = useRouter();
   const { isLoading, user } = useUser();
 
+  console.log(playlist)
+
   const player = usePlayer();
   const onPlay = useOnPlay(playlistSongs);
+
+  const searchParams = useSearchParams();
+  const isPublic = searchParams.get("public");
+
+  const href = isPublic
+    ? `/playlist?name=${playlist[0].name}&public=${isPublic}`
+    : `/playlist?name=${playlist[0].name}`;
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -49,6 +58,14 @@ const PlaylistContent: FC<PlaylistContentProps> = ({
       onPlay(playlistSongs[0].id);
     }
   };
+
+  if (playlist[0].user_id !== user?.id && playlistSongs.length === 0) {
+    return (
+      <div className="flex w-full flex-col gap-y-2 px-6 text-neutral-400">
+        No songs in this playlist yet.
+      </div>
+    );
+  }
 
   return (
     <>
@@ -72,7 +89,11 @@ const PlaylistContent: FC<PlaylistContentProps> = ({
         </div>
         {playlistSongs.map((song) => (
           <div key={song.id} className="flex items-center">
-            <SongDropdown songId={song.id} userPlaylists={userPlaylists}/>
+            <SongDropdown
+              songId={song.id}
+              userPlaylists={userPlaylists}
+              playlistOwner={playlist[0].user_id}
+            />
             <div className="flex w-full items-center gap-x-4">
               <div className="flex-1">
                 <MediaItem data={song} onClick={(id) => onPlay(id)} />
@@ -82,22 +103,26 @@ const PlaylistContent: FC<PlaylistContentProps> = ({
           </div>
         ))}
       </div>
-      <div className="flex w-full flex-col gap-y-2 truncate border-t border-neutral-700 px-6 py-3 text-lg font-semibold sm:mx-4 sm:text-xl">
-        <h1>Let&rsquo;s find something for your playlist</h1>
-        <div className="w-[90%] md:w-[60%]">
-          <SearchInput href={`/playlist?name=${playlist[0].name}`} />
-        </div>
-      </div>
-      <div className="min-h-[50vh] px-8 pb-4">
-        {songsByTitle.map((song) => (
-          <div key={song.id} className="flex w-full items-center gap-x-4">
-            <div className="flex-1">
-              <MediaItem data={song} onClick={(id: string) => onPlay(id)} />
+      {user?.id === playlist[0].user_id && (
+        <>
+          <div className="flex w-full flex-col gap-y-2 truncate border-t border-neutral-700 px-6 py-3 text-lg font-semibold sm:mx-4 sm:text-xl">
+            <h1>Let&rsquo;s find something for your playlist</h1>
+            <div className="w-[90%] md:w-[60%]">
+              <SearchInput href={href} />
             </div>
-            <AddButton playlist={playlist[0]} songId={song.id} />
           </div>
-        ))}
-      </div>
+          <div className="min-h-[50vh] px-8 pb-4">
+            {songsByTitle.map((song) => (
+              <div key={song.id} className="flex w-full items-center gap-x-4">
+                <div className="flex-1">
+                  <MediaItem data={song} onClick={(id: string) => onPlay(id)} />
+                </div>
+                <AddButton playlist={playlist[0]} songId={song.id} />
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </>
   );
 };

@@ -1,18 +1,29 @@
 "use client";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { FC } from "react";
 import { RxDotsHorizontal } from "react-icons/rx";
 import { toast } from "react-hot-toast";
 import { usePathname, useSearchParams } from "next/navigation";
 
 import DeleteAlertDialog from "@/ui/Modal/AlertDialog";
+import { useUser } from "@/hooks/User/useUser";
 
-const PlaylistDropdown = () => {
+interface PlaylistDropdownProps {
+  playlistOwner: string;
+}
+
+const PlaylistDropdown: FC<PlaylistDropdownProps> = ({ playlistOwner }) => {
   const path = usePathname();
   const searchParams = useSearchParams();
 
-  const playlistName = searchParams.get("name");
+  const { user } = useUser();
 
-  const url = `https://spotify-clone-ebon-theta.vercel.app${path}?name=${playlistName}`;
+  const playlistName = searchParams.get("name");
+  const isPublic = searchParams.get("public") || false;
+
+  const url = !isPublic
+    ? `https://spotify-clone-ebon-theta.vercel.app${path}?name=${playlistName}`
+    : `https://spotify-clone-ebon-theta.vercel.app${path}?name=${playlistName}&public=${isPublic}`;
 
   const handleShareUrl = () => {
     navigator.clipboard
@@ -37,7 +48,7 @@ const PlaylistDropdown = () => {
           className="relative left-8 min-w-[150px] rounded-md bg-neutral-800 shadow-lg shadow-neutral-900 md:left-14"
           sideOffset={5}
         >
-          <DeleteAlertDialog />
+          {playlistOwner === user?.id && <DeleteAlertDialog />}
           <DropdownMenu.Item
             onClick={handleShareUrl}
             className="cursor-pointer rounded-md p-3 transition hover:bg-neutral-600 hover:outline-none"
