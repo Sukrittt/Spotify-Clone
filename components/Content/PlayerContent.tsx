@@ -34,7 +34,7 @@ const PlayerContent: FC<PlayerContentProps> = ({ song, songUrl }) => {
   );
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
-  const [totalDuration, setTotalDuration] = useState<string>("");
+  const [totalDuration, setTotalDuration] = useState<string>("-:-");
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
 
