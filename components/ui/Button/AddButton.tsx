@@ -40,6 +40,7 @@ const AddButton: FC<AddButtonProps> = ({ playlist, songId }) => {
         .eq("user_id", user.id)
         .eq("song_id", songId)
         .eq("name", playlist.name)
+        .is("public", isPublic)
         .single();
 
       if (!error && data) {
@@ -49,7 +50,7 @@ const AddButton: FC<AddButtonProps> = ({ playlist, songId }) => {
       }
     };
     fetchData();
-  }, [songId, supabaseClient, user?.id, playlist.name, refetch]);
+  }, [songId, supabaseClient, user?.id, playlist.name, refetch, isPublic]);
 
   const handleEditPlaylist = async () => {
     if (!user) {
