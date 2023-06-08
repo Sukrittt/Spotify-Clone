@@ -1,6 +1,6 @@
 "use client";
 import { FC, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { FaPlay } from "react-icons/fa";
 import { BsShuffle } from "react-icons/bs";
 import { twMerge } from "tailwind-merge";
@@ -33,13 +33,10 @@ const PlaylistContent: FC<PlaylistContentProps> = ({
   const router = useRouter();
   const { isLoading, user } = useUser();
 
-  console.log(playlist)
-
   const player = usePlayer();
   const onPlay = useOnPlay(playlistSongs);
 
-  const searchParams = useSearchParams();
-  const isPublic = searchParams.get("public");
+  const isPublic = playlist[0].public || false;
 
   const href = isPublic
     ? `/playlist?name=${playlist[0].name}&public=${isPublic}`
