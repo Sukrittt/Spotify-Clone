@@ -12,7 +12,7 @@ const PlaylistDropdown = () => {
 
   const playlistName = searchParams.get("name");
 
-  const url = `http://localhost:3000${path}?name=${playlistName}`;
+  const url = `https://spotify-clone-ebon-theta.vercel.app${path}?name=${playlistName}`;
 
   const handleShareUrl = () => {
     navigator.clipboard
