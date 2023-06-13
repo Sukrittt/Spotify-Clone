@@ -12,7 +12,7 @@ const HoverUserCard = () => (
     </HoverCard.Trigger>
     <HoverCard.Portal>
       <HoverCard.Content
-        className="relative right-10 top-2 w-[200px] rounded-md bg-neutral-700 p-3"
+        className="relative right-10 top-2 w-[200px] rounded-md bg-neutral-700 p-3 data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade data-[state=open]:transition-all"
         sideOffset={5}
       >
         <p className="text-sm">For display purposes only.</p>
