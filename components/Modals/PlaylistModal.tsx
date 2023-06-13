@@ -32,8 +32,6 @@ const PlaylistModal = () => {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
-    console.log("clicked");
-
     try {
       setIsLoading(true);
       const imageFile = values.image?.[0];

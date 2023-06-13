@@ -44,7 +44,7 @@ const OptionsDropdown = () => {
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content
-          className="box min-w-[150px] rounded-md bg-neutral-800 shadow-lg shadow-neutral-900"
+          className="box min-w-[150px] rounded-md bg-neutral-800 shadow-lg shadow-neutral-900 will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade md:left-24"
           sideOffset={5}
         >
           <DropdownMenu.Item

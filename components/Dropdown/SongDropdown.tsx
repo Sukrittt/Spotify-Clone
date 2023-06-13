@@ -199,7 +199,8 @@ const SongDropdown: FC<SongDropdownProps> = ({
         </DropdownMenu.Trigger>
         <DropdownMenu.Portal>
           <DropdownMenu.Content
-            className="relative left-8 min-w-[180px] rounded-md bg-neutral-800 shadow-lg shadow-neutral-900 md:left-24"
+            className="
+             relative left-8 min-w-[180px] rounded-md bg-neutral-800 p-[5px] shadow-lg shadow-neutral-900 will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade md:left-24"
             sideOffset={5}
           >
             {playlistOwner === user?.id && (
@@ -229,7 +230,8 @@ const SongDropdown: FC<SongDropdownProps> = ({
               </DropdownMenu.SubTrigger>
               <DropdownMenu.Portal>
                 <DropdownMenu.SubContent
-                  className="min-w-[200px] rounded-md bg-neutral-800 shadow-lg shadow-neutral-900"
+                  className="min-w-[200px] rounded-md bg-neutral-800 shadow-lg shadow-neutral-900 will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade
+                  "
                   sideOffset={2}
                   alignOffset={-5}
                 >

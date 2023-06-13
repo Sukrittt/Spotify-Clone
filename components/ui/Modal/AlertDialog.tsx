@@ -41,8 +41,8 @@ const DeleteAlertDialog = () => {
         </p>
       </AlertDialog.Trigger>
       <AlertDialog.Portal>
-        <AlertDialog.Overlay className="fixed inset-0 bg-neutral-900/90 backdrop-blur-sm" />
-        <AlertDialog.Content className="fixed left-[50%] top-[50%] max-h-[85vh] w-[90vw] max-w-[400px] translate-x-[-50%] translate-y-[-50%] rounded-md bg-white p-[25px] sm:w-[40vw]">
+        <AlertDialog.Overlay className="fixed inset-0 bg-neutral-900/90 backdrop-blur-sm data-[state=open]:animate-overlayShow" />
+        <AlertDialog.Content className="fixed left-[50%] top-[50%] max-h-[85vh] w-[90vw] max-w-[400px] translate-x-[-50%] translate-y-[-50%] rounded-md bg-white p-[25px] data-[state=open]:animate-contentShow sm:w-[40vw]">
           <AlertDialog.Title className="m-0 text-lg font-bold text-black">
             Delete from Library?
           </AlertDialog.Title>

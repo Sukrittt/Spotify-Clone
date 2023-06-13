@@ -45,7 +45,7 @@ const PlaylistDropdown: FC<PlaylistDropdownProps> = ({ playlistOwner }) => {
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content
-          className="relative left-8 min-w-[150px] rounded-md bg-neutral-800 shadow-lg shadow-neutral-900 md:left-14"
+          className="relative left-8 min-w-[150px] rounded-md bg-neutral-800 shadow-lg shadow-neutral-900 will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade md:left-14"
           sideOffset={5}
         >
           {playlistOwner === user?.id && <DeleteAlertDialog />}
